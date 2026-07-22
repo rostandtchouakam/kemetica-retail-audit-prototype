@@ -11,6 +11,8 @@ Prototype cliquable du dashboard de consultation des indicateurs de **Retail Aud
 
 **https://kemetica-prototype.vercel.app**
 
+> Déploiement automatique : chaque `git push` sur `main` redéploie la démo via Vercel.
+
 ## ✨ Fonctionnalités
 
 - **Navigation Panel → Type de produit → Mois** (2 panels : boissons alcoolisées / non alcoolisées).
