@@ -10,11 +10,11 @@
 <style>
   :root{
     --blue:#005b97; --blue-700:#024c7e; --blue-100:#e5f2fa; --blue-50:#f0f7fc;
-    --turq:#1abc9c; --turq-d:#149b81;
+    --turq:#1a9e86; --turq-d:#14806a;
     --ink:#1b2733; --ink-soft:#5b6b7a; --line:#e3e9ef; --line-2:#eef3f7;
-    --bg:#f4f7fa; --card:#ffffff; --red:#e25c5c; --amber:#e8a13a;
-    --shadow:0 1px 2px rgba(16,42,67,.04), 0 8px 24px -12px rgba(16,42,67,.18);
-    --shadow-lg:0 24px 60px -28px rgba(16,42,67,.40);
+    --bg:#f6f8fa; --card:#ffffff; --red:#d64f4f; --amber:#c98a2b; --gold:#c79a3b;
+    --shadow:0 1px 2px rgba(16,42,67,.05);
+    --shadow-lg:0 6px 20px -12px rgba(16,42,67,.22);
     --font-d:'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
     --font-b:'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
     --r:14px;
@@ -23,15 +23,13 @@
   html,body{margin:0}
   body{font-family:var(--font-b); color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.45}
   .tnum{font-variant-numeric:tabular-nums}
-  .app{display:grid; grid-template-columns:248px 1fr; grid-template-rows:auto auto 1fr; min-height:100vh}
+  .app{display:grid; grid-template-columns:248px 1fr; grid-template-rows:auto auto 1fr auto; min-height:100vh}
   /* Topbar */
-  header.top{grid-column:1/-1; grid-row:1; display:flex; align-items:center; gap:22px; padding:14px 26px;
-    background:radial-gradient(120% 180% at 0% 0%, #0a6aa8 0%, var(--blue) 42%, var(--blue-700) 100%);
-    color:#fff; position:sticky; top:0; z-index:30; box-shadow:0 10px 30px -20px rgba(0,42,73,.7)}
-  header.top::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E")}
+  header.top{grid-column:1/-1; grid-row:1; display:flex; align-items:center; gap:22px; padding:13px 26px;
+    background:linear-gradient(180deg, #0a6aa8 0%, var(--blue) 100%);
+    color:#fff; position:sticky; top:0; z-index:30}
   .brand{display:flex; align-items:center; gap:11px; min-width:190px}
-  .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#fff,#dff3ec);display:grid;place-items:center;color:var(--blue);font-family:var(--font-d);font-weight:800;font-size:19px;box-shadow:0 4px 14px -4px rgba(0,0,0,.4)}
+  .logo{width:34px;height:34px;border-radius:8px;background:#ffffff;display:grid;place-items:center;color:var(--blue);font-family:var(--font-d);font-weight:800;font-size:19px}
   .brand b{font-family:var(--font-d);font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1}
   .brand small{display:block;opacity:.72;font-size:11px;letter-spacing:.02em;margin-top:2px}
   .filters{display:flex; gap:10px; align-items:center}
@@ -47,18 +45,18 @@
   .client-tag{margin-left:auto;display:flex;align-items:center;gap:10px;text-align:right}
   .client-tag .who{font-family:var(--font-d);font-weight:600;font-size:13px;line-height:1.1}
   .client-tag small{opacity:.7;font-size:10.5px}
-  .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(145deg,var(--turq),#0f8f76);display:grid;place-items:center;font-weight:700;font-size:14px;border:2px solid rgba(255,255,255,.5)}
+  .avatar{width:36px;height:36px;border-radius:50%;background:#ffffff;color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:13px;border:1px solid rgba(255,255,255,.6)}
   /* Geo bar */
   .geobar{grid-column:1/-1; grid-row:2; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
     padding:10px 26px; background:#fff; border-bottom:1px solid var(--line); position:sticky; top:62px; z-index:20}
   .geobar .gh{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft)}
-  .geobar .gh svg{width:15px;height:15px;color:var(--turq-d)}
+  .geobar .gh svg{width:15px;height:15px;color:var(--blue)}
   .geofld{display:flex;align-items:center;gap:6px}
   .geofld span{font-size:11px;color:var(--ink-soft);font-weight:600}
   select.ui-g{appearance:none;font-family:var(--font-b);font-weight:600;font-size:12.5px;color:var(--ink);
     background:var(--blue-50);border:1px solid var(--line);border-radius:9px;padding:6px 26px 6px 10px;cursor:pointer;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M1 2l3 3 3-3' stroke='%235b6b7a' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
-  select.ui-g.active{background:var(--turq);color:#fff;border-color:var(--turq)}
+  select.ui-g.active{background:var(--blue);color:#fff;border-color:var(--blue)}
   .georeset{margin-left:auto;font-size:12px;color:var(--blue);font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px}
   .georeset:hover{text-decoration:underline}
   .scope-note{font-size:11.5px;color:var(--ink-soft);background:var(--blue-50);padding:4px 10px;border-radius:20px;font-weight:600}
@@ -71,7 +69,7 @@
   .navi .ic{width:17px;height:17px;flex:none;opacity:.9}
   .fam{margin-top:12px}
   .fam-h{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#9aabb8;font-weight:700;padding:6px 12px 4px;display:flex;align-items:center;gap:8px}
-  .fam-h::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--turq)}
+  .fam-h::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--blue)}
   .kpi-link{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--ink);transition:.14s}
   .kpi-link:hover{background:var(--line-2);transform:translateX(2px)}
   .kpi-link.on{background:var(--blue-100);color:var(--blue);font-weight:600}
@@ -88,7 +86,7 @@
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
   @media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
   .kcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 14px;cursor:pointer;position:relative;overflow:hidden;transition:.22s cubic-bezier(.2,.7,.3,1);box-shadow:var(--shadow);opacity:0;transform:translateY(14px);animation:rise .5s forwards}
-  .kcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--turq);opacity:0;transition:.22s}
+  .kcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);opacity:0;transition:.18s}
   .kcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#cfe0ee}
   .kcard:hover::before{opacity:1}
   @keyframes rise{to{opacity:1;transform:none}}
@@ -126,7 +124,7 @@
   .drill .node.cur:hover{background:var(--blue)}
   .drill .arr{color:#b8c6d2;font-weight:700}
   .drill .node small{font-weight:500;opacity:.7;font-size:10.5px}
-  .lock-note{display:flex;align-items:center;gap:9px;background:linear-gradient(90deg,#eafaf5,#f0f7fc);border:1px solid #cdebe1;border-radius:11px;padding:9px 14px;font-size:12.5px;color:#0f6b58;font-weight:600;margin-bottom:14px}
+  .lock-note{display:flex;align-items:center;gap:9px;background:var(--blue-50);border:1px solid #d6e6f2;border-radius:10px;padding:9px 14px;font-size:12.5px;color:var(--blue);font-weight:600;margin-bottom:14px}
   .lock-note svg{width:16px;height:16px;flex:none}
   table.bk{width:100%;border-collapse:collapse;font-size:13px}
   table.bk th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700;padding:0 10px 10px}
@@ -137,13 +135,13 @@
   table.bk tr.drillable:hover td{background:#eef6fc}
   .mname{display:flex;align-items:center;gap:9px;font-weight:600}
   .mdot{width:9px;height:9px;border-radius:50%;flex:none;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
-  .badge-you{font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#fff;background:var(--turq-d);padding:2px 7px;border-radius:20px}
+  .badge-you{font-size:9.5px;font-weight:700;letter-spacing:.04em;color:#4a3a12;background:var(--gold);padding:2px 7px;border-radius:20px}
   .mmeta{font-size:11px;color:var(--ink-soft);font-weight:500}
   .chev{color:#b8c6d2;font-weight:700;font-size:15px}
   tr.drillable:hover .chev{color:var(--blue)}
   .barwrap{height:7px;background:var(--line-2);border-radius:5px;overflow:hidden;margin-top:5px}
-  .barwrap i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--blue),#3a93cc)}
-  tr.you .barwrap i{background:linear-gradient(90deg,var(--turq-d),var(--turq))}
+  .barwrap i{display:block;height:100%;border-radius:5px;background:var(--blue)}
+  tr.you .barwrap i{background:var(--gold)}
   .pivot-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
   table.pivot{border-collapse:collapse;width:100%;font-size:12.5px;min-width:560px}
   table.pivot th,table.pivot td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line-2);white-space:nowrap}
@@ -154,8 +152,8 @@
   table.pivot tbody tr:hover td{background:#f7fbfe}
   table.pivot td .cell{display:inline-block;padding:3px 8px;border-radius:6px}
   .btn{font-family:var(--font-b);font-weight:700;font-size:13px;border:0;border-radius:11px;padding:10px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.16s}
-  .btn-primary{background:var(--turq-d);color:#fff;box-shadow:0 10px 22px -12px rgba(20,155,129,.9)}
-  .btn-primary:hover{background:var(--turq);transform:translateY(-1px)}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:var(--blue-700)}
   .btn-ghost{background:#fff;color:var(--blue);border:1px solid var(--line)}
   .btn-ghost:hover{background:var(--blue-50)}
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;font-size:13px;box-shadow:var(--shadow-lg);transition:.3s;z-index:60;pointer-events:none}
@@ -165,6 +163,31 @@
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .section-gap{margin-top:18px}
   svg.chart{width:100%;height:auto;display:block}
+
+  /* Footer */
+  .appfoot{grid-column:1/-1;grid-row:4;display:flex;align-items:center;justify-content:center;gap:9px;
+    padding:12px 26px;background:var(--card);border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--ink-soft);flex-wrap:wrap}
+  .appfoot .ft-brand{font-weight:600;color:var(--ink)}
+  .appfoot b{color:var(--blue);font-weight:700}
+  .appfoot .ft-dot{opacity:.4}
+  /* Responsive */
+  @media(max-width:900px){
+    .app{grid-template-columns:1fr; grid-template-rows:auto auto auto 1fr auto}
+    header.top{grid-row:1} .geobar{grid-row:2; top:0; position:static}
+    aside{grid-row:3; border-right:0; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:6px; padding:10px 14px}
+    aside .fam{margin-top:0} aside .fam-h{display:none} .nav-top{flex-direction:row; margin-bottom:0}
+    .kpi-link{background:var(--line-2); padding:6px 10px}
+    main{grid-row:4} .appfoot{grid-row:5}
+    .grid-detail{grid-template-columns:1fr}
+  }
+  @media(max-width:640px){
+    header.top{flex-wrap:wrap; gap:12px; padding:12px 16px}
+    .filters{order:3; width:100%} select.ui{min-width:0; flex:1}
+    .client-tag{margin-left:auto} main{padding:18px 16px}
+    .cards{grid-template-columns:1fr} .page-head{flex-direction:column; align-items:flex-start}
+    table.bk, .pivot-wrap{font-size:12px}
+  }
 </style>
 </head>
 <body>
@@ -183,6 +206,7 @@
 
   <aside id="side"></aside>
   <main id="main"></main>
+  <footer class="appfoot"><span class="ft-brand">Baromètre — Retail Audit</span><span class="ft-dot">·</span>Powered by <b>Kémética</b><span class="ft-dot">·</span>© 2026 CACDS</footer>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -379,13 +403,13 @@ function deltaHTML(series,kpi){ const k=KMAP[kpi],cur=series[series.length-1],pr
   return `<span class="kdelta ${cls}">${ar} ${txt}<span style="font-weight:500;color:var(--ink-soft)"> vs ${MLAB[series.length-2]||""}</span></span>`; }
 
 /* ---------- Charts ---------- */
-const SC=["#005b97","#1abc9c","#e8893a","#8e6fc7","#d65780","#5aa9d6","#9aabb8"];
+const SC=["#005b97","#4a90c2","#8bb6d8","#6b7a88","#b9d3e8","#aab6c2"];
 function sparkline(series,color){ const W=150,H=34,mn=Math.min(...series),mx=Math.max(...series),r=(mx-mn)||1;
   const pts=series.map((v,i)=>[i/(series.length-1||1)*W,H-2-((v-mn)/r)*(H-6)]);
   const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
   const area="M0 "+H+" "+pts.map(p=>"L"+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ")+" L"+W+" "+H+" Z";
   const id="g"+Math.round(R(color,series.join())*1e6);
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="height:34px"><defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".22"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${id})"/><path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.6" fill="${color}"/></svg>`; }
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="height:34px"><path d="${area}" fill="${color}" fill-opacity="0.07"/><path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.6" fill="${color}"/></svg>`; }
 function lineChart(lines){ const W=720,H=270,pad={l:46,r:14,t:16,b:34};
   const all=lines.flatMap(l=>l.values); let mn=Math.min(...all),mx=Math.max(...all); const rg=(mx-mn)||1; mn-=rg*0.12;mx+=rg*0.12; if(mn<0&&Math.min(...all)>=0)mn=0;
   const n=MONTHS.length,X=i=>pad.l+(W-pad.l-pad.r)*(n===1?0.5:i/(n-1)),Y=v=>pad.t+(H-pad.t-pad.b)*(1-(v-mn)/(mx-mn));
@@ -394,7 +418,7 @@ function lineChart(lines){ const W=720,H=270,pad={l:46,r:14,t:16,b:34};
   let xlab="";MLAB.forEach((m,i)=>xlab+=`<text x="${X(i).toFixed(1)}" y="${H-12}" text-anchor="middle" font-size="10.5" fill="#7f8f9c" font-weight="600">${m}</text>`);
   let paths="";
   lines.forEach((l,li)=>{const pts=l.values.map((v,i)=>[X(i),Y(v)]);const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
-    if(li===0){paths+=`<defs><linearGradient id="ar0" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${l.color}" stop-opacity=".16"/><stop offset="1" stop-color="${l.color}" stop-opacity="0"/></linearGradient></defs><path d="M${pts[0][0].toFixed(1)} ${H-pad.b} ${pts.map(p=>"L"+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ")} L${pts[pts.length-1][0].toFixed(1)} ${H-pad.b} Z" fill="url(#ar0)"/>`;}
+    if(li===0){paths+=`<path d="M${pts[0][0].toFixed(1)} ${H-pad.b} ${pts.map(p=>"L"+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ")} L${pts[pts.length-1][0].toFixed(1)} ${H-pad.b} Z" fill="${l.color}" fill-opacity="0.06"/>`;}
     paths+=`<path d="${d}" fill="none" stroke="${l.color}" stroke-width="${li===0?2.8:2}" stroke-linecap="round" stroke-linejoin="round" opacity="${li===0?1:.9}"/>`;
     paths+=pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${li===0?3.2:2.4}" fill="#fff" stroke="${l.color}" stroke-width="2"/>`).join("");});
   return `<svg class="chart" viewBox="0 0 ${W} ${H}">${grid}${ylab}${xlab}${paths}</svg>`; }
@@ -419,7 +443,7 @@ function renderGeobar(){
   const active=["region","city","ptype"].filter(d=>g[d]!=="*");
   const note=active.length?`<span class="scope-note">Périmètre : ${active.map(d=>g[d]).join(" · ")}</span>`:`<span class="scope-note">Périmètre : National (tous PDV)</span>`;
   document.getElementById("geobar").innerHTML=
-    `<div class="gh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Filtres géographiques</div>${flds}${note}<span class="georeset" data-action="geo-reset">↺ Réinitialiser</span>`;
+    `<div class="gh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Filtres géographiques</div>${flds}${note}<span class="georeset" data-action="geo-reset">Réinitialiser</span>`;
 }
 function renderSidebar(){
   const fam=FAMS.map(f=>`<div class="fam"><div class="fam-h">${f}</div>${KPIS.filter(k=>k.fam===f).map(k=>`<div class="kpi-link ${state.view==='detail'&&state.kpi===k.id?'on':''}" data-kpi="${k.id}" title="${GLOSSARY[k.id]?GLOSSARY[k.id].d+'\\n\\nFormule : '+GLOSSARY[k.id].f:''}"><span class="dot"></span>${k.label}</div>`).join("")}</div>`).join("");
@@ -437,11 +461,11 @@ function homeHTML(){ const geo=geoSeed();
   const cards=HOME_CARDS.map((id,i)=>{ const s=homeSeries(id,state.pt,geo).slice(0,state.month+1);
     return `<div class="kcard" data-kpi="${id}" style="animation-delay:${i*70}ms"><span class="open">Explorer ›</span>
       <div class="klab">${KMAP[id].label}</div><div class="kval tnum">${fmt(s[s.length-1],id)}</div>${deltaHTML(s,id)}
-      <div class="spark">${sparkline(s,id==="oos_num"?"#e25c5c":(id==="price"?"#005b97":"#1abc9c"))}</div></div>`; }).join("");
+      <div class="spark">${sparkline(s,id==="oos_num"?"#e25c5c":(id==="price"?"#005b97":"#005b97"))}</div></div>`; }).join("");
   // top entreprises (PDM vol)
   state.path=state.path; const ents=children(state.pt).map(g=>({...g,v:grpVal("pdm_vol",g,state.pt,state.month,geo)})).sort((a,b)=>b.v-a.v);
   const maxv=Math.max(...ents.map(e=>e.v));
-  const rows=ents.map((e,i)=>`<tr class="${e.you?'you':''}"><td><div class="mname"><span class="mdot" style="background:${e.you?'#1abc9c':SC[i%SC.length]}"></span>${e.value} ${e.you?'<span class="badge-you">VOUS</span>':''}</div><div class="barwrap"><i style="width:${(e.v/maxv*100).toFixed(0)}%"></i></div></td><td class="num tnum" style="font-weight:700">${fmt(e.v,"pdm_vol")}</td></tr>`).join("");
+  const rows=ents.map((e,i)=>`<tr class="${e.you?'you':''}"><td><div class="mname"><span class="mdot" style="background:${e.you?'#c79a3b':SC[i%SC.length]}"></span>${e.value} ${e.you?'<span class="badge-you">VOUS</span>':''}</div><div class="barwrap"><i style="width:${(e.v/maxv*100).toFixed(0)}%"></i></div></td><td class="num tnum" style="font-weight:700">${fmt(e.v,"pdm_vol")}</td></tr>`).join("");
   return `<div class="fade"><div class="page-head"><div>
       <div class="crumb">${PANELS[state.panel].name}<span class="sep">›</span><b>${state.pt}</b><span class="sep">·</span>${MLONG[state.month]}</div>
       <h1 class="title">Vue d'ensemble — ${state.pt}</h1>
@@ -454,7 +478,7 @@ function homeHTML(){ const geo=geoSeed();
         <div class="legend"><span><i style="background:${SC[1]}"></i>Part de marché (vol.)</span><span><i style="background:${SC[0]}"></i>Distribution numérique</span></div></div></div>
       <div class="panel"><div class="panel-h"><h3>Classement par entreprise · PDM</h3><span class="mmeta">${MLONG[state.month]}</span></div>
         <div class="pad"><table class="bk"><tbody>${rows}</tbody></table></div></div></div>
-    <div class="footnote">⚠ Prototype — valeurs simulées à partir de la structure réelle (Structure.xlsx). Aucune donnée de production.</div></div>`;
+    <div class="footnote">Baromètre — Retail Audit. Indicateurs agrégés au périmètre sélectionné.</div></div>`;
 }
 
 /* ---------- DETAIL (drill-down enraciné entreprise) ---------- */
@@ -474,7 +498,7 @@ function detailHTML(){ const k=KMAP[state.kpi],pt=state.pt,geo=geoSeed(),lv=leve
   const kids=children(pt).map(g=>({...g,v:grpVal(state.kpi,g,pt,state.month,geo)})).sort((a,b)=>k.high?b.v-a.v:a.v-b.v);
   const maxv=Math.max(...kids.map(g=>g.v))||1;
   const rows=kids.map((g,i)=>`<tr class="${g.you?'you':''} ${canDrill?'drillable':''}" ${canDrill?`data-drill="${g.level}|${g.value}"`:""}>
-      <td><div class="mname"><span class="mdot" style="background:${g.you?'#1abc9c':SC[i%SC.length]}"></span>${g.value} ${g.you?'<span class="badge-you">VOUS</span>':''}${idx===0?'':`<span class="mmeta"> · ${g.ent}</span>`}</div><div class="barwrap"><i style="width:${(g.v/maxv*100).toFixed(0)}%"></i></div></td>
+      <td><div class="mname"><span class="mdot" style="background:${g.you?'#c79a3b':SC[i%SC.length]}"></span>${g.value} ${g.you?'<span class="badge-you">VOUS</span>':''}${idx===0?'':`<span class="mmeta"> · ${g.ent}</span>`}</div><div class="barwrap"><i style="width:${(g.v/maxv*100).toFixed(0)}%"></i></div></td>
       <td class="num tnum" style="font-weight:700">${fmt(g.v,state.kpi)}</td>${canDrill?'<td style="width:18px" class="chev">›</td>':''}</tr>`).join("");
   // chart top enfants
   const top=kids.slice(0,5);
@@ -501,7 +525,7 @@ function detailHTML(){ const k=KMAP[state.kpi],pt=state.pt,geo=geoSeed(),lv=leve
       <div class="panel"><div class="panel-h"><h3>${idx===0?'Par entreprise (vous vs concurrents)':'Par '+levLabel(pt,childLevel).toLowerCase()}</h3><span class="mmeta">${MLONG[state.month]}</span></div>
         <div class="pad" style="max-height:440px;overflow:auto"><table class="bk"><thead><tr><th>${levLabel(pt,childLevel)}</th><th class="num">${k.label.split(" — ")[0]}</th>${canDrill?'<th></th>':''}</tr></thead><tbody>${rows}</tbody></table></div></div>
     </div>
-    <div class="footnote">⚠ Prototype — valeurs simulées. La vraie application calculera ces indicateurs depuis la base mensuelle.</div></div>`;
+    <div class="footnote">Indicateurs calculés au niveau du périmètre sélectionné (use_flag = 1).</div></div>`;
 }
 
 /* ---------- EXPLORER ---------- */
@@ -533,7 +557,7 @@ function explorerHTML(){ const p=state.pivot,pt=state.pt,k=KMAP[p.measure],geo=g
       <div style="margin-left:auto;display:flex;gap:10px;align-items:flex-end"><button class="btn btn-primary" data-action="export">⬇ Exporter Excel</button></div>
     </div>
     <div class="panel pad"><div class="pivot-wrap"><table class="pivot"><thead>${head}</thead><tbody>${body}</tbody></table></div></div>
-    <div class="footnote">⚠ Prototype — valeurs simulées. « VOUS » = Brasseries du Cameroun (SABC). Lignes = granularité produit rattachée à son entreprise ; colonnes = géographie.</div></div>`;
+    <div class="footnote">« VOUS » = Brasseries du Cameroun (SABC). Lignes : granularité produit rattachée à son entreprise ; colonnes : géographie.</div></div>`;
 }
 
 /* ============================================================
@@ -545,7 +569,7 @@ document.addEventListener("click",e=>{
   if(!el)return;
   if(el.dataset.action==="home"){state.view="home";render();}
   else if(el.dataset.action==="explorer"){state.view="explorer";render();}
-  else if(el.dataset.action==="export"){toast("Export Excel simulé — fonctionnalité de la version finale ✦");}
+  else if(el.dataset.action==="export"){toast("Export Excel : disponible dans la version finale.");}
   else if(el.dataset.action==="geo-reset"){state.geo={region:"*",city:"*",ptype:"*"};render();}
   else if(el.dataset.mode){state.kpi=el.dataset.mode;render();}
   else if(el.dataset.kpi){state.kpi=el.dataset.kpi;state.view="detail";state.path=[];render();}
