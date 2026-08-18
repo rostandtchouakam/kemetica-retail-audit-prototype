@@ -84,7 +84,7 @@
   .crumb b{color:var(--blue)} .crumb .sep{opacity:.4}
   h1.title{font-family:var(--font-d);font-weight:700;font-size:26px;letter-spacing:-.02em;margin:4px 0 0}
   .sub{color:var(--ink-soft);font-size:13.5px;margin-top:3px}
-  .demo-pill{font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--amber);background:#fff7ea;border:1px solid #f3dcae;padding:5px 11px;border-radius:20px;white-space:nowrap}
+  .demo-pill{font-size:10.5px;font-weight:600;letter-spacing:.02em;color:var(--blue);background:var(--blue-50);border:1px solid #d6e6f2;padding:5px 11px;border-radius:20px;white-space:nowrap}
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
   @media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
   .kcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 14px;cursor:pointer;position:relative;overflow:hidden;transition:.22s cubic-bezier(.2,.7,.3,1);box-shadow:var(--shadow);opacity:0;transform:translateY(14px);animation:rise .5s forwards}
@@ -258,25 +258,50 @@ const GEO={
 };
 const GEO_LABEL={region:"Région",city:"Ville",ptype:"Type de PDV"};
 
+const FAM_VENTES="Ventes, parts de marché & volumes";
+const FAM_DISTRIB="Distribution";
+const FAM_STOCKS="Ruptures & stocks";
+const FAM_PRIX="Prix";
 const KPIS=[
-  {id:"pdm_vol",label:"Part de marché — Volume",fam:"Ventes & Parts de marché",unit:"%",min:1,max:34,share:"vol",high:true},
-  {id:"pdm_val",label:"Part de marché — Valeur",fam:"Ventes & Parts de marché",unit:"%",min:1,max:34,share:"val",high:true},
-  {id:"volume",label:"Volume écoulé",fam:"Ventes & Parts de marché",unit:" HL",sum:"vol",high:true},
-  {id:"valeur",label:"Valeur",fam:"Ventes & Parts de marché",unit:" M FCFA",sum:"val",high:true},
-  {id:"sish",label:"Share in Shop Handling",fam:"Ventes & Parts de marché",unit:"%",min:2,max:46,share:"vol",high:true},
-  {id:"nd",label:"Distribution numérique",fam:"Distribution",unit:"%",min:38,max:96,high:true},
-  {id:"ndsh",label:"Distribution num. (Shop Handling)",fam:"Distribution",unit:"%",min:45,max:98,high:true},
-  {id:"wd",label:"Distribution pondérée",fam:"Distribution",unit:"%",min:42,max:97,high:true},
-  {id:"deff",label:"Efficacité de distribution",fam:"Distribution",unit:"",min:0.82,max:1.22,high:true},
-  {id:"oos_num",label:"Rupture (OOS numérique)",fam:"Ruptures & Stocks",unit:"%",min:1,max:13,high:false},
-  {id:"oos_wt",label:"Rupture pondérée (OOS)",fam:"Ruptures & Stocks",unit:"%",min:1,max:11,high:false},
-  {id:"scd",label:"Couverture de stock",fam:"Ruptures & Stocks",unit:" j",min:5,max:32,high:true},
-  {id:"stock_share",label:"Part de stock",fam:"Ruptures & Stocks",unit:"%",share:"stk",high:true},
-  {id:"price",label:"Prix moyen",fam:"Prix",unit:" F",min:450,max:950,high:false}
+  {id:"pdm_vol",label:"Part de marché — Volume",fam:FAM_VENTES,unit:"%",min:1,max:34,share:"vol",high:true},
+  {id:"pdm_val",label:"Part de marché — Valeur",fam:FAM_VENTES,unit:"%",min:1,max:34,share:"val",high:true},
+  {id:"volume",label:"Volume écoulé",fam:FAM_VENTES,unit:" HL",sum:"vol",high:true},
+  {id:"valeur",label:"Valeur",fam:FAM_VENTES,unit:" M FCFA",sum:"val",high:true},
+  {id:"sish",label:"Share in Shop Handling",fam:FAM_VENTES,unit:"%",min:2,max:46,share:"vol",high:true},
+  {id:"purch_share",label:"Purchases % (total)",fam:FAM_VENTES,unit:"%",share:"purch",high:true},
+  {id:"stock_share",label:"Part de stock",fam:FAM_VENTES,unit:"%",share:"stk",high:true},
+  {id:"fwd_stock_share",label:"Forward Stock % Share",fam:FAM_VENTES,unit:"%",share:"stk1",high:true},
+  {id:"nd",label:"Distribution numérique",fam:FAM_DISTRIB,unit:"%",min:38,max:96,high:true},
+  {id:"ndsh",label:"Distribution num. (Shop Handling)",fam:FAM_DISTRIB,unit:"%",min:45,max:98,high:true},
+  {id:"wd",label:"Distribution pondérée",fam:FAM_DISTRIB,unit:"%",min:42,max:97,high:true},
+  {id:"deff",label:"Efficacité de distribution",fam:FAM_DISTRIB,unit:"",min:0.82,max:1.22,high:true},
+  {id:"oos_num",label:"Rupture (OOS numérique)",fam:FAM_STOCKS,unit:"%",min:1,max:13,high:false},
+  {id:"oos_wt",label:"Rupture pondérée (OOS)",fam:FAM_STOCKS,unit:"%",min:1,max:11,high:false},
+  {id:"scd",label:"Couverture de stock",fam:FAM_STOCKS,unit:" j",min:5,max:32,high:true},
+  {id:"price",label:"Prix moyen",fam:FAM_PRIX,unit:" F",min:450,max:950,high:false}
 ];
 const KMAP=Object.fromEntries(KPIS.map(k=>[k.id,k]));
-const FAMS=["Ventes & Parts de marché","Distribution","Ruptures & Stocks","Prix"];
+const FAMS=[FAM_VENTES,FAM_DISTRIB,FAM_STOCKS,FAM_PRIX];
 const HOME_CARDS=["pdm_vol","nd","oos_num","price"];
+/* Glossaire (source : Indicateurs & Formules.xlsx) pour infobulles et glossaire */
+const GLOSSARY={
+  pdm_vol:{d:"Part du produit/marque/entreprise en volume vendu, rapportée au volume total de la catégorie.",f:"Somme des volumes vendus / Volume total vendu dans la catégorie"},
+  pdm_val:{d:"Part du produit/marque/entreprise en valeur monétaire, rapportée à la valeur totale de la catégorie.",f:"Somme des valeurs vendues / Valeur totale vendue dans la catégorie"},
+  volume:{d:"Volume total vendu (hectolitres) dans tous les PDV, par produit/marque/entreprise.",f:"Somme des volumes vendus (HL)"},
+  valeur:{d:"Valeur monétaire du volume vendu, par produit/marque/entreprise.",f:"Somme des valeurs monétaires des volumes vendus"},
+  sish:{d:"Part de marché restreinte aux PDV qui commercialisent la catégorie (Shop Handling).",f:"Volumes du produit / Volumes de la catégorie dans les PDV où le produit est vendu"},
+  purch_share:{d:"Part du produit/marque/entreprise en volume acheté par les PDV, rapportée aux achats totaux de la catégorie.",f:"Somme des volumes achetés / Volume total acheté dans la catégorie"},
+  stock_share:{d:"Part des stocks (volume) présents dans les PDV, rapportée au stock total de la catégorie.",f:"Somme des volumes en stock / Volume total en stock dans la catégorie"},
+  fwd_stock_share:{d:"Part des stocks 1 (forward stock) en volume, rapportée au stock 1 total de la catégorie.",f:"Somme des volumes en stock 1 / Volume total en stock 1 dans la catégorie"},
+  nd:{d:"Ratio de présence du produit dans l'ensemble des PDV du panel.",f:"Nb de PDV commercialisant le produit / Nb de PDV du panel"},
+  ndsh:{d:"Distribution numérique restreinte aux PDV qui commercialisent la catégorie.",f:"ND produit / ND catégorie"},
+  wd:{d:"Distribution pondérée par le poids en volume des PDV où le produit est présent.",f:"Volumes catégorie dans les PDV où le produit est présent / Volume total catégorie"},
+  deff:{d:"Ratio entre distribution pondérée et distribution numérique (se compare entre les mois).",f:"Weighted Distribution / Numeric Distribution"},
+  oos_num:{d:"Ratio de rupture de stock dans l'ensemble des PDV du panel au passage de l'auditeur.",f:"Nb de PDV en rupture / Nb de PDV du panel"},
+  oos_wt:{d:"Rupture pondérée par le poids en volume des PDV où le produit est en rupture.",f:"Volumes catégorie dans les PDV en rupture / Volume total catégorie"},
+  scd:{d:"Nombre moyen de jours que le stock disponible peut couvrir, vu la dynamique des ventes.",f:"Stock en volume / (Volumes des ventes / 30,5)"},
+  price:{d:"Prix moyen observé dans les PDV du panel, par produit/marque/entreprise.",f:"Moyenne des prix observés dans les PDV"}
+};
 
 /* ---------- PRNG déterministe ---------- */
 function R(){let s=Array.prototype.join.call(arguments,"|");let h=2166136261>>>0;
@@ -300,9 +325,13 @@ function geoSeed(){ const g=state.geo,p=["region","city","ptype"].map(k=>g[k]).f
 function gf(l,geo){ return geo==="*"?1:(0.5+R("gf",l.sku,geo)*1.0); }
 function leafVol(l,m,geo){ return (60+R("v",l.sku)*900)*(0.82+R("mf",l.sku,m)*0.34)*gf(l,geo); }
 function leafStk(l,m,geo){ return (40+R("s",l.sku)*600)*(0.8+R("ms",l.sku,m)*0.4)*gf(l,geo); }
+function leafStk1(l,m,geo){ return (18+R("s1",l.sku)*300)*(0.80+R("ms1",l.sku,m)*0.40)*gf(l,geo); }
+function leafPurch(l,m,geo){ return (55+R("pu",l.sku)*880)*(0.80+R("mpu",l.sku,m)*0.36)*gf(l,geo); }
 function leafPrice(l){ return 450+R("p",l.sku)*480; }
 function catVol(pt,m,geo,val){ return leaves(pt).reduce((s,l)=>s+leafVol(l,m,geo)*(val?leafPrice(l):1),0); }
 function catStk(pt,m,geo){ return leaves(pt).reduce((s,l)=>s+leafStk(l,m,geo),0); }
+function catStk1(pt,m,geo){ return leaves(pt).reduce((s,l)=>s+leafStk1(l,m,geo),0); }
+function catPurch(pt,m,geo){ return leaves(pt).reduce((s,l)=>s+leafPurch(l,m,geo),0); }
 function metric(kpi,key,m,geo){ const k=KMAP[kpi]; const base=k.min+R(kpi,key,"m")*(k.max-k.min);
   const dir=(kpi==="oos_num"||kpi==="oos_wt")?-1:(R(kpi,key,"d")>0.5?1:-1); const span=k.max-k.min;
   return clamp(base+dir*R(kpi,key,"t")*span*0.05*(m-2.5)+(R(kpi,key,m,geo)-0.5)*span*0.05,k.min,k.max); }
@@ -313,6 +342,8 @@ function valGroup(kpi,ls,key,pt,m,geo){
   if(k.share==="vol") return ls.reduce((s,l)=>s+leafVol(l,m,geo),0)/catVol(pt,m,geo,false)*100;
   if(k.share==="val") return ls.reduce((s,l)=>s+leafVol(l,m,geo)*leafPrice(l),0)/catVol(pt,m,geo,true)*100;
   if(k.share==="stk") return ls.reduce((s,l)=>s+leafStk(l,m,geo),0)/catStk(pt,m,geo)*100;
+  if(k.share==="stk1") return ls.reduce((s,l)=>s+leafStk1(l,m,geo),0)/catStk1(pt,m,geo)*100;
+  if(k.share==="purch") return ls.reduce((s,l)=>s+leafPurch(l,m,geo),0)/catPurch(pt,m,geo)*100;
   if(k.sum==="vol")  return ls.reduce((s,l)=>s+leafVol(l,m,geo),0)/10;
   if(k.sum==="val")  return ls.reduce((s,l)=>s+leafVol(l,m,geo)*leafPrice(l),0)/1000;
   return metric(kpi,key,m,geo);
@@ -391,7 +422,7 @@ function renderGeobar(){
     `<div class="gh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Filtres géographiques</div>${flds}${note}<span class="georeset" data-action="geo-reset">↺ Réinitialiser</span>`;
 }
 function renderSidebar(){
-  const fam=FAMS.map(f=>`<div class="fam"><div class="fam-h">${f}</div>${KPIS.filter(k=>k.fam===f).map(k=>`<div class="kpi-link ${state.view==='detail'&&state.kpi===k.id?'on':''}" data-kpi="${k.id}"><span class="dot"></span>${k.label}</div>`).join("")}</div>`).join("");
+  const fam=FAMS.map(f=>`<div class="fam"><div class="fam-h">${f}</div>${KPIS.filter(k=>k.fam===f).map(k=>`<div class="kpi-link ${state.view==='detail'&&state.kpi===k.id?'on':''}" data-kpi="${k.id}" title="${GLOSSARY[k.id]?GLOSSARY[k.id].d+'\\n\\nFormule : '+GLOSSARY[k.id].f:''}"><span class="dot"></span>${k.label}</div>`).join("")}</div>`).join("");
   document.getElementById("side").innerHTML=`<div class="nav-top">
     <div class="navi ${state.view==='home'?'on':''}" data-action="home"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8M5 9v11h14V9"/></svg>Vue d'ensemble</div>
     <div class="navi ${state.view==='explorer'?'on':''}" data-action="explorer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>Explorateur</div>
@@ -415,7 +446,7 @@ function homeHTML(){ const geo=geoSeed();
       <div class="crumb">${PANELS[state.panel].name}<span class="sep">›</span><b>${state.pt}</b><span class="sep">·</span>${MLONG[state.month]}</div>
       <h1 class="title">Vue d'ensemble — ${state.pt}</h1>
       <div class="sub">Indicateurs clés du mois pour Brasseries du Cameroun (SABC). Cliquez une carte pour explorer par entreprise puis descendre dans la hiérarchie.</div></div>
-      <span class="demo-pill">● Données d'exemple</span></div>
+      <span class="demo-pill">Données à jour au : ${MLONG[state.month]}</span></div>
     <div class="cards">${cards}</div>
     <div class="section-gap grid-detail">
       <div class="panel"><div class="panel-h"><h3>Évolution — niveau ${state.pt}</h3><span class="mmeta">SABC</span></div>
@@ -453,7 +484,7 @@ function detailHTML(){ const k=KMAP[state.kpi],pt=state.pt,geo=geoSeed(),lv=leve
       <div class="crumb"><span data-action="home" style="cursor:pointer">${PANELS[state.panel].name}</span><span class="sep">›</span><b>${pt}</b><span class="sep">›</span>${k.label}</div>
       <h1 class="title">${k.label}</h1>
       <div class="head-metric"><span class="v tnum">${fmt(headSeries[state.month],state.kpi)}</span>${deltaHTML(headSeries.slice(0,state.month+1),state.kpi)}<span class="sub" style="margin:0">${idx===0?'niveau '+pt+' (SABC)':'périmètre : '+state.path.map(p=>p.value).join(' › ')}</span></div></div>
-      <span class="demo-pill">● Données d'exemple</span></div>
+      <span class="demo-pill">Données à jour au : ${MLONG[state.month]}</span></div>
 
     <div class="drill">${crumbs}</div>
     <div class="lock-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
@@ -461,7 +492,6 @@ function detailHTML(){ const k=KMAP[state.kpi],pt=state.pt,geo=geoSeed(),lv=leve
     </div>
 
     <div class="controls">
-      ${isPdm?`<div class="ctl"><label>Mesure</label><div class="toggle"><button data-mode="pdm_vol" class="${state.kpi==='pdm_vol'?'on':''}">Volume</button><button data-mode="pdm_val" class="${state.kpi==='pdm_val'?'on':''}">Valeur</button></div></div>`:""}
       <div class="ctl"><label>Niveau affiché</label><div style="font-weight:700;color:var(--blue);padding:7px 0">${levLabel(pt,childLevel)}${canDrill?' <span class="mmeta" style="font-weight:500">— cliquez une ligne pour descendre</span>':' <span class="mmeta" style="font-weight:500">— niveau le plus fin</span>'}</div></div>
     </div>
 
@@ -495,7 +525,7 @@ function explorerHTML(){ const p=state.pivot,pt=state.pt,k=KMAP[p.measure],geo=g
       <div class="crumb">${PANELS[state.panel].name}<span class="sep">›</span><b>${pt}</b><span class="sep">·</span>${MLONG[state.month]}</div>
       <h1 class="title">Explorateur</h1>
       <div class="sub">Granularité produit (enracinée entreprise) en lignes × géographie en colonnes.</div></div>
-      <span class="demo-pill">● Données d'exemple</span></div>
+      <span class="demo-pill">Données à jour au : ${MLONG[state.month]}</span></div>
     <div class="controls">
       <div class="ctl"><label>Mesure</label><select class="ui-d" data-pv="measure">${measOpt}</select></div>
       <div class="ctl"><label>Lignes — granularité produit</label><select class="ui-d" data-pv="rows">${rowOpt}</select></div>
